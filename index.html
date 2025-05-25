@@ -3,78 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="format-detection" content="telephone=no">
-
   <title>EDID Calculator</title>
-
-  <!-- PWA manifest -->
   <link rel="manifest" href="manifest.json" />
-
-  <!-- Styles -->
+  <meta name="theme-color" content="#0e1a2b" />
+  <meta name="format-detection" content="telephone=no" />
   <style>
     body {
-      font-family: Arial, sans-serif;
-      color: #fff;
-      padding: 1rem;
-      margin: 0;
-      background: #171A1C;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e1a2b;
+      color: #ffffff;
+      padding: 1.5rem;
+      margin: 0 auto;
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
-    h1 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin: 0.75rem 0 0.25rem;
-      font-weight: bold;
-    }
+    h1 { text-align: center; color: #4fc3f7; text-transform: uppercase; }
+    label { display: block; margin: 0.75rem 0 0.25rem; font-weight: bold; }
     input, button {
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-      Border-radius: 10px;	
-      box-sizing: border-box;
+      width: 100%; padding: 0.75rem; font-size: 1rem; box-sizing: border-box;
+      border-radius: 6px; border: 1px solid #444; background: #1e2d3f; color: #fff;
     }
     button {
-      margin-top: 1rem;
-      cursor: pointer;
-      Background: #00FFC2;
-      appearance: none;         /* Remove default styling (iOS/Android) */
-     -webkit-appearance: none;
+      background-color: #4fc3f7; color: #0e1a2b; font-weight: bold;
+      margin-top: 1rem; cursor: pointer;
     }
-    #edid-results {
-      display: none;
-      Color: #fff;
-      margin-top: 1.5rem;
-      background: #171A1C;
-      padding: 1rem;
-      border-radius: 16px;
-      line-height: 1.4;
-      overflow-x: auto;
-      border-radius: 20px;
-      border: 1px solid #00FFC2;
+    button:hover { background-color: #29b6f6; }
+    #edid-results, #edid-warning, a.download-link {
+      display: none; margin-top: 1.5rem; background: #1c2b3a;
+      padding: 1rem; border-radius: 8px;
     }
-    #edid-results span {
-      font-weight: bold;
-    }
-    #edid-warning {
-      display: none;
-      margin-top: 1rem;
-      padding: 0.75rem;
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeeba;
-      border-radius: 4px;
-    }
-    a.download-link {
-      display: none;
-      margin-top: 1rem;
-      text-align: center;
-      width: 100%;
-      word-break: break-all;
-    }
+    a.download-link { display: block; color: #4fc3f7; text-align: center; }
+    hr { border-color: #2a3e52; }
   </style>
 </head>
 <body>
@@ -86,47 +44,37 @@
   <label for="edid-height">Height (px)</label>
   <input id="edid-height" type="number" value="1080" />
 
-  <label for="edid-refresh">Refresh (Hz)</label>
+  <label for="edid-refresh">Refresh Rate (Hz)</label>
   <input id="edid-refresh" type="number" step="0.01" value="60" />
 
-  <label>
-    <input id="edid-rb" type="checkbox" checked />
-    Reduced Blanking (CVT-RB)
-  </label>
+  <label><input id="edid-rb" type="checkbox" checked /> Reduced Blanking (CVT-RB)</label>
 
   <button id="edid-gen-btn">Generate EDID</button>
 
   <div id="edid-results">
-    <div><span>H Total:</span> <span id="edid-hTotal"></span> px</div>
-    <div><span>H Front Porch:</span> <span id="edid-hFront"></span> px</div>
-    <div><span>H Sync:</span> <span id="edid-hSync"></span> px</div>
-    <div><span>H Active:</span> <span id="edid-hActive"></span> px</div>
-    <hr>
-    <div><span>V Total:</span> <span id="edid-vTotal"></span> lines</div>
-    <div><span>V Front Porch:</span> <span id="edid-vFront"></span> lines</div>
-    <div><span>V Sync:</span> <span id="edid-vSync"></span> lines</div>
-    <div><span>V Active:</span> <span id="edid-vActive"></span> lines</div>
-    <hr>
-    <div><span>Pixel Clock:</span> <span id="edid-pclk"></span> MHz</div>
-    <div><span>Data Rate:</span> <span id="edid-dr"></span> Gbps</div>
-    <div><span>Signal Type:</span> <span id="edid-signalType"></span></div>
+    <div><strong>H Total:</strong> <span id="edid-hTotal"></span></div>
+    <div><strong>H Front Porch:</strong> <span id="edid-hFront"></span></div>
+    <div><strong>H Active:</strong> <span id="edid-hActive"></span></div>
+    <div><strong>H Sync:</strong> <span id="edid-hSync"></span></div>
+    <div><strong>H Polarity:</strong> <span id="edid-hPol"></span></div>
+    <hr />
+    <div><strong>V Total:</strong> <span id="edid-vTotal"></span></div>
+    <div><strong>V Front Porch:</strong> <span id="edid-vFront"></span></div>
+    <div><strong>V Active:</strong> <span id="edid-vActive"></span></div>
+    <div><strong>V Sync:</strong> <span id="edid-vSync"></span></div>
+    <div><strong>V Polarity:</strong> <span id="edid-vPol"></span></div>
+    <hr />
+    <div><strong>Pixel Clock:</strong> <span id="edid-pclk"></span> MHz</div>
+    <div><strong>Data Rate:</strong> <span id="edid-dr"></span> Gbps</div>
+    <div><strong>Signal Type:</strong> <span id="edid-signalType"></span></div>
   </div>
 
-  <div id="edid-warning">
-    ⚠️ Warning: Data rate exceeds DP 1.4 maximum (25.92 Gbps). Consider DP 2.0 or compression.
-  </div>
+  <div id="edid-warning">⚠️ Warning: Data rate exceeds DP 1.4 maximum (25.92 Gbps).</div>
 
-  <a id="edid-download" class="download-link" href="#" download="custom.edid.bin">
-    ⬇️ Download EDID .bin
-  </a>
-  <a id="edid-download-img" class="download-link" href="#" download="edid-info.jpg">
-    ⬇️ Download Info as JPEG
-  </a>
+  <a id="edid-download" class="download-link" download>⬇️ Download EDID .bin</a>
+  <a id="edid-download-img" class="download-link" download>⬇️ Download Info as JPEG</a>
 
-  <!-- Widget script -->
   <script src="edid-widget.js"></script>
-
-  <!-- Service Worker registration -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./service-worker.js');
