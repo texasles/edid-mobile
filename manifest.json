@@ -1,10 +1,10 @@
 {
   "name": "EDID Calculator",
   "short_name": "EDID",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
-  "theme_color": "#00ffc2",
-  "background_color": "#00ffc2",
+  "theme_color": "#0e1a2b",
+  "background_color": "#0e1a2b",
   "icons": [
     {
       "src": "icon-192.png",
