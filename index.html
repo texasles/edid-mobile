@@ -3,82 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EDID Calculator</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0e1a2b" />
-  <meta name="format-detection" content="telephone=no" />
+  <title>EDID Widget</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #0e1a2b;
-      color: #ffffff;
-      padding: 1.5rem;
-      margin: 0 auto;
-      max-width: 600px;
+      background: #171A1C;
+      color: #00FFC2;
+      padding: 32px;
+      margin: 0;
+      box-sizing: border-box;
+      border: 1px solid #00FFC2;
+      border-radius: 20px;
     }
-    h1 { text-align: center; color: #4fc3f7; text-transform: uppercase; }
-    label { display: block; margin: 0.75rem 0 0.25rem; font-weight: bold; }
+    h1 {
+      font-size: 1.25rem;
+      text-align: center;
+      color: #00FFC2;
+      margin-bottom: 1rem;
+    }
     input, button {
-      width: 100%; padding: 0.75rem; font-size: 1rem; box-sizing: border-box;
-      border-radius: 6px; border: 1px solid #444; background: #1e2d3f; color: #fff;
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #00FFC2;
+      border-radius: 6px;
+      background: #171A1C;
+      color: #fff;
     }
     button {
-      background-color: #4fc3f7; color: #0e1a2b; font-weight: bold;
-      margin-top: 1rem; cursor: pointer;
+      background-color: #171A1C;
+      color: #fff;
+      font-weight: bold;
     }
-    button:hover { background-color: #29b6f6; }
+    button:hover {
+      background-color: #171A1C;
+    }
     #edid-results, #edid-warning, a.download-link {
-      display: none; margin-top: 1.5rem; background: #1c2b3a;
-      padding: 1rem; border-radius: 8px;
+      display: none;
+      margin-top: 1rem;
+      background: #171A1C;
+      padding: 1rem;
+      border-radius: 8px;
     }
-    a.download-link { display: block; color: #4fc3f7; text-align: center; }
-    hr { border-color: #2a3e52; }
+    a.download-link {
+      display: block;
+      text-align: center;
+      color: #ffffff;
+      margin-top: 1rem;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #2a3e52;
+      margin: 0.5rem 0;
+    }
   </style>
 </head>
 <body>
-  <h1>EDID Calculator</h1>
+  <div id="edid-calculator">
+    <h1>EDID Calc</h1>
+    <input id="edid-width" type="number" placeholder="Width (px)" value="1920" />
+    <input id="edid-height" type="number" placeholder="Height (px)" value="1080" />
+    <input id="edid-refresh" type="number" step="0.01" placeholder="Refresh (Hz)" value="60" />
+    <label><input id="edid-rb" type="checkbox" checked /> Reduced Blanking (CVT-RB)</label>
+    <button id="edid-gen-btn">Generate EDID</button>
 
-  <label for="edid-width">Width (px)</label>
-  <input id="edid-width" type="number" value="1920" />
+    <div id="edid-results">
+      <div><strong>H Total:</strong> <span id="edid-hTotal"></span></div>
+      <div><strong>H Front:</strong> <span id="edid-hFront"></span></div>
+      <div><strong>H Active:</strong> <span id="edid-hActive"></span></div>
+      <div><strong>H Sync:</strong> <span id="edid-hSync"></span></div>
+      <div><strong>H Polarity:</strong> <span id="edid-hPol"></span></div>
+      <hr>
+      <div><strong>V Total:</strong> <span id="edid-vTotal"></span></div>
+      <div><strong>V Front:</strong> <span id="edid-vFront"></span></div>
+      <div><strong>V Active:</strong> <span id="edid-vActive"></span></div>
+      <div><strong>V Sync:</strong> <span id="edid-vSync"></span></div>
+      <div><strong>V Polarity:</strong> <span id="edid-vPol"></span></div>
+      <hr>
+      <div><strong>Pixel Clock:</strong> <span id="edid-pclk"></span> MHz</div>
+      <div><strong>Data Rate:</strong> <span id="edid-dr"></span> Gbps</div>
+      <div><strong>Signal Type:</strong> <span id="edid-signalType"></span></div>
+    </div>
 
-  <label for="edid-height">Height (px)</label>
-  <input id="edid-height" type="number" value="1080" />
-
-  <label for="edid-refresh">Refresh Rate (Hz)</label>
-  <input id="edid-refresh" type="number" step="0.01" value="60" />
-
-  <label><input id="edid-rb" type="checkbox" checked /> Reduced Blanking (CVT-RB)</label>
-
-  <button id="edid-gen-btn">Generate EDID</button>
-
-  <div id="edid-results">
-    <div><strong>H Total:</strong> <span id="edid-hTotal"></span></div>
-    <div><strong>H Front Porch:</strong> <span id="edid-hFront"></span></div>
-    <div><strong>H Active:</strong> <span id="edid-hActive"></span></div>
-    <div><strong>H Sync:</strong> <span id="edid-hSync"></span></div>
-    <div><strong>H Polarity:</strong> <span id="edid-hPol"></span></div>
-    <hr />
-    <div><strong>V Total:</strong> <span id="edid-vTotal"></span></div>
-    <div><strong>V Front Porch:</strong> <span id="edid-vFront"></span></div>
-    <div><strong>V Active:</strong> <span id="edid-vActive"></span></div>
-    <div><strong>V Sync:</strong> <span id="edid-vSync"></span></div>
-    <div><strong>V Polarity:</strong> <span id="edid-vPol"></span></div>
-    <hr />
-    <div><strong>Pixel Clock:</strong> <span id="edid-pclk"></span> MHz</div>
-    <div><strong>Data Rate:</strong> <span id="edid-dr"></span> Gbps</div>
-    <div><strong>Signal Type:</strong> <span id="edid-signalType"></span></div>
+    <div id="edid-warning">⚠️ Data rate exceeds DP 1.4 max (25.92 Gbps).</div>
+    <a id="edid-download" class="download-link" download>⬇️ Download EDID .bin</a>
+    <a id="edid-download-img" class="download-link" download>⬇️ Download JPEG Info</a>
   </div>
 
-  <div id="edid-warning">⚠️ Warning: Data rate exceeds DP 1.4 maximum (25.92 Gbps).</div>
-
-  <a id="edid-download" class="download-link" download>⬇️ Download EDID .bin</a>
-  <a id="edid-download-img" class="download-link" download>⬇️ Download Info as JPEG</a>
-
   <script src="edid-widget.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js');
-    }
-  </script>
 </body>
 </html>
