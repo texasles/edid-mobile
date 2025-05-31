@@ -80,12 +80,12 @@
     for (let i = 0; i < 127; i++) sum += edid[i];
     edid[127] = (256 - (sum % 256)) % 256;
 
-    const binBlob = new Blob([edid], { type: 'application/octet-stream' });
-    const binURL = URL.createObjectURL(binBlob);
-    const binLink = get('edid-download');
-    binLink.href = binURL;
-    binLink.download = `EDID_${w}x${h}_${r.toFixed(2)}.bin`;
-    binLink.style.display = 'block';
+//    const binBlob = new Blob([edid], { type: 'application/octet-stream' });
+//    const binURL = URL.createObjectURL(binBlob);
+//    const binLink = get('edid-download');
+//    binLink.href = binURL;
+//    binLink.download = `EDID_${w}x${h}_${r.toFixed(2)}.bin`;
+//    binLink.style.display = 'block';
 
     if (!html2canvasReady) return;
     html2canvas(get('edid-results')).then(canvas => {
