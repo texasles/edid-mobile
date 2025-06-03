@@ -1,20 +1,23 @@
 {
   "name": "EDID Calculator",
-  "short_name": "EDID",
-  "start_url": "index.html",
+  "short_name": "EDID Calc",
+  "description": "Calculate custom CVT/CVT-RB timings and download a JPEG of the results.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#0e1a2b",
-  "background_color": "#0e1a2b",
+  "background_color": "#171A1C",
+  "theme_color": "#00FFC2",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
 }
+
